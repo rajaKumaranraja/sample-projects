@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.box1{
+			height: 800px;
+			width: 1000px;
+			border:1px solid;
+			border-radius: 5px;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			align-content: space-around;
+			margin: auto;
+			background: linear-gradient(orange,green)
+		}
+		.box2{
+			height:11.5%;
+			width:13.5%;
+			border:1px solid;
+			border-radius: 3px;
+			font-size: 20px
+		}
+		.box3{
+			height:19.5%;
+			width: 94%;
+			border:1px solid;
+			color: black;
+		}
+	</style>
+</head>
+<body>
+   <div class="box1" >
+   <input class="box3" type="button" >
+   
+   <input class="box2" value="Red" type="button" onclick="">
+   <input class="box2" value="Deg" type="button" onclick="">
+   <input class="box2" value="X!"  type="button" onclick="">
+   <input class="box2" value="("   type="button" onclick="">
+   <input class="box2" value=")"   type="button" onclick="">
+   <input class="box2" value="%"   type="button" onclick="operat('%')">
+   <input class="box2" value="AC"  type="button" onclick="empty()">
+   <input class="box2" value="Inv" type="button" onclick="">
+   <input class="box2" value="sin" type="button" onclick="">
+   <input class="box2" value="in"  type="button" onclick="">
+   <input class="box2" value="7"   type="button" onclick="numb(7)">
+   <input class="box2" value="8"   type="button" onclick="numb(8)">
+   <input class="box2" value="9"   type="button" onclick="numb(9)">
+   <input class="box2" value="/"   type="button" onclick="operat('/')">
+   <input class="box2" value="pi"  type="button" onclick="">
+   <input class="box2" value="cos" type="button" onclick="">
+   <input class="box2" value="log" type="button" onclick="">
+   <input class="box2" value="4"   type="button" onclick="numb(4)">
+   <input class="box2" value="5"   type="button" onclick="numb(5)">
+   <input class="box2" value="6"   type="button" onclick="numb(6)">
+   <input class="box2" value="*"   type="button" onclick="operat('*')">
+   <input class="box2" value="e"   type="button" onclick="">
+   <input class="box2" value="tan" type="button" onclick="">
+   <input class="box2" value="remove" type="button" onclick="cler()">
+   <input class="box2" value="1"   type="button" onclick="numb(1)">
+   <input class="box2" value="2"   type="button" onclick="numb(2)">
+   <input class="box2" value="3"   type="button" onclick="numb(3)">
+   <input class="box2" value="-"   type="button" onclick="operat('-')">
+   <input class="box2" value="ans" type="button" onclick="operat('ans')">
+   <input class="box2" value="exp" type="button" onclick="operat('exp')">
+   <input class="box2" value="x^y" type="button" onclick="operat('x^y')">
+   <input class="box2" value="0"   type="button" onclick="numb(0)">
+   <input class="box2" value="."   type="button" onclick="numb('.')">
+   <input class="box2" value="="   type="button" onclick="equal('=')">
+   <input class="box2" value="+"   type="button" onclick="operat('+')">
+
+   	
+   </div> 
+
+   <script type="text/javascript">
+   var one,two,three;
+   	function empty(){
+   		document.getElementsByClassName("box3")[0].value="";
+   	}
+   	function numb(s){
+   		document.getElementsByClassName("box3")[0].value += s;
+
+   	}
+   	function operat(w){
+       one=document.getElementsByClassName("box3")[0].value;
+       two=w;   
+       document.getElementsByClassName("box3")[0].value=" ";
+   	}
+   	function cler(){
+   		var a=parseFloat(document.getElementsByClassName("box3")[0].value);
+   		a=a/10;
+   		console.log(a);
+   		a=parseInt(a);
+   		document.getElementsByClassName("box3")[0].value=(a);
+
+   	}
+   
+   	function equal(t){
+   		switch(two){
+   		case'+':
+   			document.getElementsByClassName("box3")[0].value=parseFloat(one)+parseFloat(document.getElementsByClassName("box3")[0].value); 
+   		    break;
+   		case'-':
+   			document.getElementsByClassName("box3")[0].value=parseFloat(one)-parseFloat(document.getElementsByClassName("box3")[0].value); 
+   		    break;   
+   		case'*':
+   			document.getElementsByClassName("box3")[0].value=one*parseFloat(document.getElementsByClassName("box3")[0].value); 
+   		    break;
+   		case'/':
+   			document.getElementsByClassName("box3")[0].value=one/parseFloat(document.getElementsByClassName("box3")[0].value); 
+   		    break; 
+   		case'%':
+   			document.getElementsByClassName("box3")[0].value=one%parseFloat(document.getElementsByClassName("box3")[0].value); 
+   		    break;
+   		case'exp':
+   			document.getElementsByClassName("box3")[0].value=one*(parseInt(10)**parseFloat(document.getElementsByClassName("box3")[0].value)); 
+   		    break;
+   		case'x^y':
+   			document.getElementsByClassName("box3")[0].value=one**parseFloat(document.getElementsByClassName("box3")[0].value); 
+   		    break; 
+   		case'ans':
+   			document.getElementsByClassName("box3")[0].value=one**parseFloat(document.getElementsByClassName("box3")[0].value); 
+   		    break;                    
+   		 
+   		}
+
+   	}
+   
+   </script>
+</body>
+</html>
