@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.big{
+			height: 670px;
+			width:60%;
+			background-color: #22577C;
+			top:10px;
+			margin: auto;
+			border-radius: 5px;
+			
+		}
+		.top{
+			height: 80px;
+			width:60%;
+			background-color: rgba(0,0,0,.5);
+			border-radius: 5px;
+			margin: auto;
+
+		}
+		.top>div{
+			text-align: center;
+			padding-top: 30px;
+			font-size: 25px;
+			border-radius: 5px;
+			float:left;
+			margin-left: 240px
+		}
+		#small>div{
+			height:50px;
+			width: 50px;
+			background-color: white;
+			border: 1px solid;
+			margin: 20px;
+			border-radius: 5px;
+			
+		}
+		#small{
+			height:500px;
+			width: 65%;
+			background-color: #D7F3FC;
+			position: relative;
+			left: 20%;
+			top: 12%;
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			align-content: space-around;
+			border-radius: 5px;
+
+		}
+		p{
+			float: right;
+			color: white;
+			margin:25px 430px 0px 0px;
+			font-size: 30px
+		}
+		
+
+	</style>
+</head>
+<body >
+<div class="top">
+	<div onclick="create()">START</div>
+	<p >Moves</p><div id="move"></div>
+</div>
+<div class="big">
+	<div id="small"></div>
+</div>
+<script type="text/javascript">
+	var a,b,c,d,e,f,g,child;
+	var newimg=[];
+	var newid=[];
+	var newurl=[];
+	var newlist=[];
+	var bn=0;
+	var q=0;
+	var imagelist=["url(https://i.pinimg.com/originals/2d/25/33/2d253345f71115dd59e1cee09e0a559e.jpg)",
+					"url(https://i.pinimg.com/originals/0c/1d/86/0c1d863ed57692b94ac848ebdc7113bd.jpg)",
+					"url(https://www.shortlist.com/media/imager/201908/38244-posts.article_md.jpg)",
+					"url(http://www.goodmorningimagesforlover.com/wp-content/uploads/2018/09/the-picture-of-doraemon.jpg)",
+					"url(https://comicvine1.cbsistatic.com/uploads/original/11/114183/5198263-nobita_nobi_-_2005_anime.png)",
+					"url(https://www.nickindia.com/wp-content/uploads/2018/06/character-9.png)",
+					"url(https://i.pinimg.com/originals/c2/a8/e7/c2a8e7afd5b28868c03a9dbcb072e758.jpg)",
+					"url(https://static-ca.ebgames.ca/images/products/741534/3max.jpg)",
+					"url(https://www.konfest.com/wp-content/uploads/2019/07/Konfest-PNG-JPG-Image-Pic-Photo-Free-Download-Royalty-Unlimited-clip-art-sticker-doraemon-character-sizuka-cartoon-hungama-5.png)",
+					"url(https://cn.i.cdn.tides.test-ti-platform.com/cnapac/content/2016/showpage/ben-10/in/showicon.png)",
+					"url(https://i.pinimg.com/originals/ce/5f/53/ce5f53437e291c48705428721406985c.jpg)",
+					"url(https://cdn4.vectorstock.com/i/1000x1000/56/83/funny-butterfly-cartoon-vector-1225683.jpg)",
+					"url(https://thumbs.dreamstime.com/z/cute-cartoon-blue-bird-waving-illustration-50763697.jpg)",
+					"url(https://amp.insider.com/images/59721b83197cf78a168b4623-750-563.jpg)",
+					"url(https://www.youngisthan.in/wp-content/uploads/2017/02/Pikachu-407x400.png)",
+					"url(https://image.shutterstock.com/image-vector/cute-cartoon-unicorn-on-blue-260nw-723965359.jpg)",]
+	b=document.getElementById("small");
+	function create(){
+		b.innerText="";
+		a=prompt("Enter the number of images show (5 to 9)");
+		if(a<5 || a>16){
+			alert("Please enter the correct number");
+		}
+		else{
+			for(i=0;i<a;i++){
+			child=document.createElement("div");
+			b.appendChild(child);
+			child.id=i;
+			d=imagelist.splice(Math.random()*imagelist.length-1,1);
+			console.log(d);
+			child.style.backgroundImage=d;
+			child.style.backgroundSize="100% 100%";
+			newlist.push(d);
+			newurl.push(d);
+			child.setAttribute("onclick", "show(this.id)");
+			}
+			for(i=0;i<a;i++){
+				child=document.createElement("div");
+				b.appendChild(child);
+				child.id=i+parseInt(a);
+				f=newlist.splice(Math.random()*newlist.length-1,1);
+				child.style.backgroundImage=f;
+				child.style.backgroundSize="100% 100%";
+				child.setAttribute("onclick", "show(this.id)");
+				newurl.push(f[0]);
+			}
+		setTimeout(next,1000);
+		}
+		
+}
+
+function next(){
+	for(i=0;i<a*2;i++){
+		
+		document.getElementById(i).style.background="rgba(0,0,0,.5)";
+	}
+}
+function show(s){
+	q=q+1;
+	document.getElementById("move").innerText=q;
+	bn++;
+	newimg.push(newurl[s]);
+	newid.push(s);
+	var t=document.getElementById(s).style.backgroundImage=newurl[s];
+	document.getElementById(s).style.backgroundSize="100% 100%";
+	if(bn===2){
+
+		setTimeout(check,400);
+	}
+}
+function check(){
+
+	
+	if(newimg[0]==newimg[1]&& !(newid[0]==newid[1])){
+		
+		for(var t=0;t<2;t++){
+			document.getElementById(newid[t]).style.visibility="hidden";
+
+		}
+			bn=0;
+			newimg=[];
+			newid=[];
+	}
+	else{
+		for(var g=0;g<2;g++){
+			document.getElementById(newid[g]).style.background="rgba(0,0,0,.5)";
+
+		}
+			bn=0;
+			newimg=[];
+			newid=[];
+
+	}
+}
+</script>
+</body>
+</html>
