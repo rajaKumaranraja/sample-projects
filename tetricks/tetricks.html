@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link href="https://fonts.googleapis.com/css?family=Grenze&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="tetris.css">
+	<
+</head>
+<body style="overflow: hidden;margin: 0px" onload="startNow() , sound1()" onkeydown="divMove(event)">
+<audio src="fade.mp3" id="sound" controls loop style="display: none;"></audio>
+<div id="whole">
+<p style="text-align: center;"> One Day Fight</p>
+<div id="helped" ></div>
+<div id="showHide">
+	<ul style ="list-style-type:circle">
+		<li>Do not change the position in first and last columns</li>
+		<li>Place the boxes carefully and make the line</li>
+		<li>One row fill the color you got the 10 points</li>
+		<li>Many row fill the color in same time but only one row removed in that time</li>
+		<li>Using uparrow to rotate the current object</li>
+		<li> You can make a line using any color of boxes in object</li>
+	</ul>
+</div>
+	<div id="main"></div>
+	<div id="nextIn">
+		<p>SCORE</p>
+		<div id="scoring">0</div>
+	</div>
+</div>
+</body>
+<script type="text/javascript">
+var nextRow=0;
+var wholeParent=document.getElementById("whole");
+var score=0,pattern,selectPattern,count,movePattern,child2,child3,child,child1;
+var parent=document.getElementById("main");
+var helping=document.getElementById("scoring"),x,x1,x2,x3;
+var wholeDivEle = [];
+var pattern1 = [[24,25,34,35],[23,24,25,26],[24,25,35,36],[24,25,26,35],[24,34,35,36]];
+var square = document.getElementsByClassName('smallSqures');
+var next = 0,cheking=0;
+var arrowChange = [[0,0,0,0],
+					[[-9,0,9,18],[9,0,-9,-18]],
+					[[-9,0,-11,-2],[9,0,11,2]],
+					[[-9,0,0,0],[0,-1,-1,-9],[0,0,0,9],[9,1,1,0]],
+					[[-9,-9,-1,-1],[8,-1,-9,0],[-9,-9,-1,-1],[10,19,11,2]]];
+var colorPicker=["rgb(8, 234, 255)","rgb(69, 255, 109)","rgb(255, 69, 224)","rgb(255, 48, 48)","rgb(252, 255, 48)"]
+function sound1(){
+		var audio=document.getElementById("sound");
+		audio.play();
+		setTimeout(sound1,55000);
+	}
+
+function creating(){
+	score=0;
+	child2.style.display="none"
+	for(i=0;i<200;i++){
+		var child=document.createElement("div");
+		child.classList.add("smallSqures");
+		parent.appendChild(child);
+		wholeDivEle.unshift(i);
+	}
+	patternCreated();
+}
+var ended=0;
+function patternCreated(){
+	count = 0;
+	selectPattern = Math.floor(Math.random()*pattern1.length);
+	pattern = pattern1[selectPattern];
+		x3 = colorPicker[Math.floor(Math.random()*colorPicker.length)];
+		for(var i = 0; i<pattern.length;i++){
+			square[pattern[i]].style.backgroundColor = x3;
+			square[pattern[i]].classList.add('move');
+			square[pattern[i]].style.boxShadow = "0px 0px 5px rgb(219, 219, 219) inset";
+			square[pattern[i]].style.border = "1px solid "+x3;
+		}
+		divMoving();
+	
+}
+
+function divMoving(){
+	movePattern = [];
+	for (var i = 0; i < pattern.length; i++) {
+		if ((pattern[i] + 10) < 200 && ((square[pattern[i] + 10].style.backgroundColor == "") || (square[pattern[i] + 10].style.backgroundColor != "" && pattern.includes(pattern[i]+10)))) {
+			cheking=1;
+			movePattern.push(pattern[i]+10);
+		}
+	}
+	if (movePattern.length == 4) {
+		automaticMove();
+	}
+	else{
+		cheking=0;
+		next = 0;
+		for (var i = 0; i < 30; i++) {
+			if (square[i].style.backgroundColor != "") {
+				next = 1;
+				break;
+			}
+		}
+		if (next == 0) {
+			check();
+		}
+		else{
+			gameOver();
+		}
+	}
+}
+var mnq;
+function automaticMove(){		
+		for(i=0;i<4;i++){
+			square[pattern[i]].style.backgroundColor = "";
+			square[pattern[i]].style.boxShadow = "";
+			square[pattern[i]].style.border = "";
+		}
+		for(j=3;j>=0;j--){
+			square[movePattern[j]].style.backgroundColor = x3;
+			square[movePattern[j]].style.boxShadow = "0px 0px 10px rgba(0,0,0,.8) inset";
+			square[movePattern[j]].style.border = "1px solid "+x3;
+		}
+		pattern = movePattern;
+		if (next == 0) {
+			setTimeout(divMoving,500);
+		}		
+}
+
+function divMove(event){
+	var yes = 0,yesmove=0,ops=0,jack=1;
+	for (var i = 0; i < pattern.length; i++) {
+		if (pattern[i] % 10 == 0 || pattern[i] % 10 == 9 || (selectPattern===1 && pattern[i] % 10 == 8 && count===1)) {
+			yes = 1;
+			break;
+		}	
+	}
+	movePattern = [];
+	var colors =  square[pattern[0]].style.backgroundColor;
+        if (event.keyCode == 38 && next == 0 && selectPattern !== 0 && yes == 0 ) {
+        	var changePossible = arrowChange[selectPattern];
+        	count=(count==(changePossible.length))?0:count;
+        	var checkingPattern =  pattern[i] +(changePossible[count][i]);
+        	// for(n=0;n<4;n++){
+        	// 	if(checkingPattern[n].style.backgroundColor === ""){
+        	// 		jack=0;
+        	// 	}
+        	// }
+        	// if(jack===0){
+	        	for (var i = pattern.length-1; i >=0 ; i--) {
+		        	square[pattern[i]].style.backgroundColor = "";
+		        	square[pattern[i]].style.border = "";
+			       	square[pattern[i]].style.boxShadow = "";
+	                pattern[i] = pattern[i] +(changePossible[count][i]);
+				}
+		       	count++;
+		       	for (var i = 0; i < pattern.length; i++) {
+		       		square[pattern[i]].style.backgroundColor = colors;
+		       		square[pattern[i]].style.border = "1px solid "+colors;
+			       	square[pattern[i]].style.boxShadow = "0px 0px 10px rgba(0,0,0,.8) inset";
+		       	}
+		    //}
+        }
+        if ((event.keyCode == 37 || event.keyCode == 39)  ) {
+        	j =(event.keyCode == 37) ? -1 : 1;
+        		for(i=0;i<4;i++){
+	        	if (((j == -1 && ([pattern[i]] % 10)-1 != -1) || (j == 1 && ([pattern[i]] % 10) + 1 != 10))&&((square[pattern[i]+j].style.backgroundColor == "")||(pattern.indexOf( pattern[i]+j)>=0)) ) {
+	        		movePattern.push(pattern[i]+j);
+	        	}else{
+	        		 ops=1;
+	        	}	
+        	}
+        	if ( movePattern.length == 4&& ops==0 ) {
+		       	for(k=0;k<4;k++){
+		       		square[pattern[k]].style.backgroundColor = "";
+		       		square[pattern[k]].style.border = "";
+		       		square[pattern[k]].style.boxShadow = "";
+		       	}
+		       	for(l=3;l>=0;l--){
+		       		square[movePattern[l]].style.backgroundColor = colors;
+		       		square[movePattern[l]].style.border = "1px solid "+colors;
+		       		square[movePattern[l]].style.boxShadow = "0px 0px 10px rgba(0,0,0,.8) inset";
+		       	}      
+		       	pattern = movePattern;
+		        }
+    	}
+   //  	if(event.keyCode == 40){
+   //  		movePattern = [];
+			// for (var i = 0; i < pattern.length; i++) {
+			// 	if ((pattern[i] + 10) < 200 && ((square[pattern[i] + 10].style.backgroundColor == "") || (square[pattern[i] + 10].style.backgroundColor != "" && pattern.includes(pattern[i]+10)))) {
+			// 		mnq=0;
+			// 		movePattern.push(pattern[i]+10);
+			// 	}
+			// }
+			// for(i=0;i<4;i++){
+			// 	square[pattern[i]].style.backgroundColor = "";
+			// 	square[pattern[i]].style.boxShadow = "";
+			// 	square[pattern[i]].style.border = "";
+			// }
+			// for(j=3;j>=0;j--){
+			// 	square[movePattern[j]].style.backgroundColor = x3;
+			// 	square[movePattern[j]].style.boxShadow = "0px 0px 10px rgba(0,0,0,.8) inset";
+			// 	square[movePattern[j]].style.border = "1px solid "+x3;
+			// }
+			// pattern = movePattern;
+   //  	}
+}
+function gameOver(){
+	child2=document.createElement("div");
+	child2.classList.add("finalDiv");
+	parent.appendChild(child2);
+	child3=document.createElement("p");
+	child2.appendChild(child3);
+	child3.innerText="RESTART";
+	child3.setAttribute("onclick","restarting()")
+}
+function restarting(){
+	document.location.reload()
+}
+function startNow(){
+	child2=document.createElement("div");
+	child2.classList.add("finalDiv");
+	parent.appendChild(child2);
+	child3=document.createElement("p");
+	child2.appendChild(child3);
+	child3.innerText="START";
+	child3.setAttribute("onclick","creating()");
+}
+var gameWinning=[],ok,m;
+var array1;
+function check(){
+	m = 19;
+	ok = 0;
+	gameWinning=[190,191,192,193,194,195,196,197,198,199];
+	check2()
+	
+}
+function check2(){
+	for(i=0;i<gameWinning.length;i++){
+		if(square[gameWinning[i]].style.backgroundColor != ""){
+			ok++;
+		}
+	}
+	if(ok===10){
+		for (j=0;j<gameWinning.length;j++){		
+			square[gameWinning[j]].style.backgroundColor="";
+			square[gameWinning[j]].style.border = "";
+		    square[gameWinning[j]].style.boxShadow = "";
+		}
+		array1=gameWinning;
+		score=score+10;
+		repainting();
+	}
+	for(k=0;k<gameWinning.length;k++){
+		gameWinning[k]=gameWinning[k]-10;
+	}
+
+	if(m>2){
+		ok=0;
+		m=m-1;
+		check2();		
+	}
+	else if(cheking===0){
+		patternCreated();
+	}
+}
+
+function repainting(){	
+	helping.innerText=score;
+	for(i=array1.length-1;i>=0;i--){
+		square[array1[i]].style.backgroundColor=square[array1[i]-10].style.backgroundColor
+		square[array1[i]].style.border=square[array1[i]-10].style.border;
+		square[array1[i]].style.boxShadow=square[array1[i]-10].style.boxShadow
+	}
+	for(i=0;i<array1.length;i++){
+		array1[i]=array1[i]-10;
+	}
+	if(array1[0]==0){		
+		// patternCreated();
+		check();
+	}
+	else{
+		repainting();
+	}
+	
+}
+
+	
+</script>
+</html>
